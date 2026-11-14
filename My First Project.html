@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recruitment Management System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f5f7;
+            margin: 0;
+        }
+
+        header {
+            background-color: teal;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .section {
+            display: none;
+            background-color: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            background-color: teal;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        li {
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Recruitment & Applicant Management System</h1>
+    <p>Manage Jobs and Applicants</p>
+</header>
+
+<nav>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('jobs')">Job Postings</button>
+    <button onclick="showPage('applicants')">Applicants</button>
+    <button onclick="showPage('interviews')">Interviews</button>
+</nav>
+
+<div id="dashboard" class="section">
+    <h2>Dashboard</h2>
+
+    <p>Total Jobs: <span id="jobCount">0</span></p>
+    <p>Total Applicants: <span id="appCount">0</span></p>
+    <p>Total Interviews: <span id="interviewCount">0</span></p>
+</div>
+
+<div id="jobs" class="section">
+    <h2>Job Postings</h2>
+
+    <input type="text" id="jobName" placeholder="Enter Job Name">
+
+    <button onclick="addJob()">Add Job</button>
+
+    <h3>Available Jobs</h3>
+    <ul id="jobList"></ul>
+</div>
+
+<div id="applicants" class="section">
+    <h2>Applicants</h2>
+
+    <input type="text" id="appName" placeholder="Enter Name">
+
+    <input type="email" id="email" placeholder="Enter Email">
+
+    <select id="appJob">
+        <option value="">Select Job</option>
+    </select>
+
+    <button onclick="addApplicant()">Add Applicant</button>
+
+    <h3>Applicant List</h3>
+    <ul id="appList"></ul>
+</div>
+
+<div id="interviews" class="section">
+    <h2>Schedule Interview</h2>
+
+    <select id="candidate">
+        <option value="">Select Applicant</option>
+    </select>
+
+    <input type="date" id="date">
+
+    <button onclick="scheduleInterview()">Schedule</button>
+
+    <h3>Scheduled Interviews</h3>
+    <ul id="interviewList"></ul>
+</div>
+
+<script>
+
+let jobs = [];
+let applicants = [];
+let interviews = [];
+
+function showPage(page) {
+
+    let sections = document.getElementsByClassName("section");
+
+    for (let i = 0; i < sections.length; i++) {
+        sections[i].style.display = "none";
+    }
+
+    document.getElementById(page).style.display = "block";
+}
+
+// Add Job
+
+function addJob() {
+
+    let name = document.getElementById("jobName").value;
+
+    if (name == "") {
+        alert("Please enter job name");
+    }
+    else {
+        jobs.push(name);
+
+        document.getElementById("jobList").innerHTML +=
+            "<li>" + name + "</li>";
+
+        document.getElementById("appJob").innerHTML +=
+            "<option>" + name + "</option>";
+
+        document.getElementById("jobName").value = "";
+
+        updateDashboard();
+    }
+}
+
+// Add Applicant
+
+function addApplicant() {
+
+    let name = document.getElementById("appName").value;
+    let email = document.getElementById("email").value;
+    let job = document.getElementById("appJob").value;
+
+    if (name == "" || email == "" || job == "") {
+        alert("Please fill all details");
+    }
+    else {
+
+        applicants.push(name);
+
+        document.getElementById("appList").innerHTML +=
+            "<li>" + name + " - " + email + " - " + job + "</li>";
+
+        document.getElementById("candidate").innerHTML +=
+            "<option>" + name + "</option>";
+
+        document.getElementById("appName").value = "";
+        document.getElementById("email").value = "";
+
+        updateDashboard();
+    }
+}
+
+// Schedule Interview
+
+function scheduleInterview() {
+
+    let name = document.getElementById("candidate").value;
+    let date = document.getElementById("date").value;
+
+    if (name == "" || date == "") {
+        alert("Please select candidate and date");
+    }
+    else {
+
+        interviews.push(name);
+
+        document.getElementById("interviewList").innerHTML +=
+            "<li>" + name + " - " + date + "</li>";
+
+        updateDashboard();
+    }
+}
+
+// Update Dashboard
+
+function updateDashboard() {
+
+    document.getElementById("jobCount").innerHTML = jobs.length;
+
+    document.getElementById("appCount").innerHTML = applicants.length;
+
+    document.getElementById("interviewCount").innerHTML = interviews.length;
+}
+
+showPage("dashboard");
+
+</script>
+
+</body>
+</html>
